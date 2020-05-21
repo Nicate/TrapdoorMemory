@@ -73,4 +73,37 @@ public class Tiles : MonoBehaviour {
 			Debug.LogError("Even number of tiles required to form pairs.");
 		}
 	}
+
+
+	public Tile findNearestTile(Vector3 point, float range) {
+		float minimumDistance = float.MaxValue;
+		Tile nearestTile = null;
+
+		foreach(Tile tile in tiles) {
+			float currentDistance = Vector3.Distance(tile.transform.position, point);
+
+			if(currentDistance < minimumDistance) {
+				minimumDistance = currentDistance;
+				nearestTile = tile;
+			}
+		}
+
+		if(minimumDistance > range) {
+			return null;
+		}
+		else {
+			return nearestTile;
+		}
+	}
+
+
+	public bool isPair(Tile tile1, Tile tile2) {
+		foreach(Pair pair in pairs) {
+			if(pair.tile1 == tile1 && pair.tile2 == tile2 || pair.tile1 == tile2 && pair.tile2 == tile1) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

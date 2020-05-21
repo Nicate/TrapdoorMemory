@@ -43,3 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba43a95adf90f3143904de115b149867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userInterface: {fileID: 0}
+  contents: {fileID: 0}
+  tiles: {fileID: 0}
+  selectionRange: 0.4
