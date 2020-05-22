@@ -21,10 +21,14 @@ public class Tile : MonoBehaviour {
 	private Material material;
 	private Color originalColor;
 
+	private Animator animator;
+
 
 	private void Awake() {
 		material = selectableMeshRenderer.material;
 		originalColor = material.GetColor("_BaseColor");
+
+		animator = trapdoor.GetComponent<Animator>();
 	}
 
 	private void LateUpdate() {
@@ -68,7 +72,7 @@ public class Tile : MonoBehaviour {
 			container.SetActive(false);
 		}
 		else {
-			container.SetActive(!flipped);
+			container.SetActive(true);
 		}
 
 		if(disabled) {
@@ -87,20 +91,12 @@ public class Tile : MonoBehaviour {
 
 
 	public void flip() {
-		Quaternion rotation = trapdoor.transform.rotation;
-
 		if(flipped) {
-			rotation = Quaternion.identity;
-
-			container.SetActive(!disabled);
+			animator.SetTrigger("FlipOff");
 		}
 		else {
-			rotation = Quaternion.AngleAxis(180.0f, Vector3.right);
-
-			container.SetActive(false);
+			animator.SetTrigger("FlipOn");
 		}
-
-		trapdoor.transform.rotation = rotation;
 
 		flipped = !flipped;
 	}

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Game : MonoBehaviour {
 	public Menu menu;
 	public HUD hud;
+	public GameOver gameOver;
 
 	public Contents contents;
 	public Tiles tiles;
@@ -35,6 +36,7 @@ public class Game : MonoBehaviour {
 
 	private void Start() {
 		menu.setEnabled(true);
+		gameOver.setEnabled(false);
 
 		music.playMenuMusic();
 	}
@@ -48,8 +50,10 @@ public class Game : MonoBehaviour {
 
 	public void startGame() {
 		menu.setEnabled(false);
+		gameOver.setEnabled(false);
 
 		hud.resetScores();
+		gameOver.resetScores();
 
 		tiles.shuffle(contents.contentPrefabs);
 
@@ -101,6 +105,7 @@ public class Game : MonoBehaviour {
 									}
 
 									hud.incrementScore1();
+									gameOver.incrementScore1();
 
 									opponent.removeKnownTile(activatedTile);
 								}
@@ -125,6 +130,9 @@ public class Game : MonoBehaviour {
 
 							if(tiles.getAvailableTiles().Length > 0) {
 								opponentTurnCoroutine = StartCoroutine(handleOpponentTurn());
+							}
+							else {
+								StartCoroutine(handleStopGame());
 							}
 						}
 						else if(selectedTile.content is SoundContent) {
@@ -156,6 +164,7 @@ public class Game : MonoBehaviour {
 				}
 
 				hud.incrementScore2();
+				gameOver.incrementScore2();
 
 				opponent.removeKnownTile(tile);
 			}
@@ -179,7 +188,24 @@ public class Game : MonoBehaviour {
 		if(tiles.getAvailableTiles().Length > 0) {
 			turn = true;
 		}
+		else {
+			StartCoroutine(handleStopGame());
+		}
 
 		opponentTurnCoroutine = null;
+	}
+
+	private IEnumerator handleStopGame() {
+		yield return new WaitForSeconds(opponent.delay);
+
+		stopGame();
+	}
+
+	public void stopGame() {
+		gameOver.setEnabled(true);
+
+		music.stopGameMusic();
+
+		playing = false;
 	}
 }
