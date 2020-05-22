@@ -106,4 +106,29 @@ public class Tiles : MonoBehaviour {
 
 		return false;
 	}
+
+
+	public Tile[] getAvailableTiles() {
+		List<Tile> availableTiles = new List<Tile>();
+
+		foreach(Tile tile in tiles) {
+			if(!tile.disabled) {
+				availableTiles.Add(tile);
+			}
+		}
+
+		return availableTiles.ToArray();
+	}
+
+	public Tile[] getFlippedTiles(bool flipped) {
+		List<Tile> flippedTiles = new List<Tile>();
+
+		foreach(Tile tile in tiles) {
+			if(tile.flipped == flipped) {
+				flippedTiles.Add(tile);
+			}
+		}
+
+		return flippedTiles.ToArray();
+	}
 }
