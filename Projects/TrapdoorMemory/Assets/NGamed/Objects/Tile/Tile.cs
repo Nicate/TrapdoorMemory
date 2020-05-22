@@ -9,6 +9,8 @@ public class Tile : MonoBehaviour {
 	public Color selectionColor;
 	public Color activeColor;
 
+
+	internal Content content;
 	
 	internal bool selected;
 	internal bool activated;
@@ -25,6 +27,10 @@ public class Tile : MonoBehaviour {
 		originalColor = material.GetColor("_BaseColor");
 	}
 
+	private void LateUpdate() {
+		container.transform.rotation = Camera.main.transform.rotation;
+	}
+
 
 	public void setContent(Content contentPrefab) {
 		foreach(Transform contentTransform in container.transform) {
@@ -32,7 +38,7 @@ public class Tile : MonoBehaviour {
 			Destroy(contentTransform.gameObject);
 		}
 
-		Content content = Instantiate(contentPrefab, container.transform, false);
+		content = Instantiate(contentPrefab, container.transform, false);
 
 		content.name = contentPrefab.name;
 	}

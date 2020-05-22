@@ -57,8 +57,10 @@ public class Game : MonoBehaviour {
 					selectedTile.setActivated(true);
 					activatedTiles.Add(selectedTile);
 
-					if(activatedTiles.Count >= 2) {
+					if(activatedTiles.Count == 2) {
 						bool match = tiles.isPair(activatedTiles[0], activatedTiles[1]);
+
+						bool left = true;
 
 						foreach(Tile activatedTile in activatedTiles.ToArray()) {
 							activatedTile.setActivated(false);
@@ -75,8 +77,21 @@ public class Game : MonoBehaviour {
 							}
 							else {
 								activatedTile.flip();
+
+								if(!activatedTile.flipped && activatedTile.content is SoundContent) {
+									SoundContent soundContent = activatedTile.content as SoundContent;
+
+									soundContent.play(left, !left);
+
+									left = false;
+								}
 							}
 						}
+					}
+					else if(selectedTile.content is SoundContent) {
+						SoundContent soundContent = selectedTile.content as SoundContent;
+
+						soundContent.play(true, true);
 					}
 				}
 			}
